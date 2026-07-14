@@ -1,0 +1,12 @@
+out/
+build/
+*.o
+*.ko
+*.img
+*.zip
+*.tar
+*.gz
+*.a
+*.cmd
+.*.d
+*.dtb
