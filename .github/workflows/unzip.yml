@@ -19,7 +19,7 @@ jobs:
       - name: التحقق من وجود الملف
         id: check
         run: |
-          if [ -f "sound.zip" ]; then
+          if [ -f "security.zip" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -35,7 +35,7 @@ jobs:
           unzip -o security.zip 
           
           # حذف الملف المضغوط
-          rm sound.zip
+          rm security.zip
 
       - name: رفع التغييرات إلى GitHub
         if: steps.check.outputs.exists == 'true'
