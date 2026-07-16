@@ -1,5 +1,3 @@
- name: Unzip and Cleanup
-
 on:
   push:
     paths:
@@ -27,12 +25,15 @@ jobs:
 
       - name: فك الضغط وحذف الملف المضغوط
         if: steps.check.outputs.exists == 'true'
-        run: |  
+        run: |
+          # حذف المجلد القديم إن وجد لتجنب التداخل
+          rm -rf init
+          
           # فك الضغط إلى مجلد باسم init
           unzip -o init.zip -d init
           
           # حذف الملف المضغوط
-          rm -rf init.zip
+          rm init.zip
 
       - name: رفع التغييرات إلى GitHub
         if: steps.check.outputs.exists == 'true'
@@ -48,4 +49,4 @@ jobs:
             git push
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # هذا المفتاح لا يسبب حلقات لا نهائية
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # هذا المفتاح لا يسبب حلقات لا نهائي
