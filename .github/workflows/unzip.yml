@@ -3,7 +3,7 @@ name: Unzip and Cleanup
 on:
   push:
     paths:
-      - 'init.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
+      - 'mm.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
   workflow_dispatch: # (اختياري) لتشغيله يدوياً من تبويب Actions
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: التحقق من وجود الملف
         id: check
         run: |
-          if [ -f "init.zip" ]; then
+          if [ -f "mm.zip" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -35,7 +35,7 @@ jobs:
           unzip -o mm.zip 
           
           # حذف الملف المضغوط
-          rm init.zip
+          rm mm.zip
 
       - name: رفع التغييرات إلى GitHub
         if: steps.check.outputs.exists == 'true'
