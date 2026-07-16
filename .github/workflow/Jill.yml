@@ -1,0 +1,51 @@
+name: Unzip and Cleanup
+
+on:
+  push:
+    paths:
+      - 'init.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
+  workflow_dispatch: # (اختياري) لتشغيله يدوياً من تبويب Actions
+
+jobs:
+  unzip-job:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # صلاحية كتابة للدفع (push)
+
+    steps:
+      - name: سحب الكود من المستودع
+        uses: actions/checkout@v4
+
+      - name: التحقق من وجود الملف
+        id: check
+        run: |
+          if [ -f "init.zip" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: فك الضغط وحذف الملف المضغوط
+        if: steps.check.outputs.exists == 'true'
+        run: |  
+          # فك الضغط إلى مجلد باسم init
+          unzip -o init.zip -d init
+          
+          # حذف الملف المضغوط
+          rm -rf init.zip
+
+      - name: رفع التغييرات إلى GitHub
+        if: steps.check.outputs.exists == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          # التأكد من وجود تغييرات قبل الرفع
+          if git diff --staged --quiet; then
+            echo "لا توجد تغييرات لرفعها."
+          else
+            git commit -m "Unzip init.zip and remove archive"
+            git push
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # هذا المفتاح لا يسبب حلقات لا نهائية
