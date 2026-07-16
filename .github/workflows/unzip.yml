@@ -3,7 +3,7 @@ name: Unzip and Cleanup
 on:
   push:
     paths:
-      - 'scripts.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
+      - 'patches.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
   workflow_dispatch: # (اختياري) لتشغيله يدوياً من تبويب Actions
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: التحقق من وجود الملف
         id: check
         run: |
-          if [ -f "scripts.zip" ]; then
+          if [ -f "patches.zip" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -29,13 +29,13 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         run: |
           # حذف المجلد القديم إن وجد لتجنب التداخل
-          rm -rf scripts
+          rm -rf patches
           
           # فك الضغط إلى مجلد باسم init
-          unzip -o scripts.zip 
+          unzip -o patches.zip 
           
           # حذف الملف المضغوط
-          rm scripts.zip
+          rm patches.zip
 
       - name: رفع التغييرات إلى GitHub
         if: steps.check.outputs.exists == 'true'
@@ -47,7 +47,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "لا توجد تغييرات لرفعها."
           else
-            git commit -m "Unzip scripts.zip and remove archive"
+            git commit -m "Unzip patches.zip and remove archive"
             git push
           fi
         env:
