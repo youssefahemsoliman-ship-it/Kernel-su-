@@ -1,3 +1,5 @@
+name: Unzip and Cleanup
+
 on:
   push:
     paths:
@@ -49,4 +51,5 @@ jobs:
             git push
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # هذا المفتاح لا يسبب حلقات لا نهائي
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # هذا المفتاح لا يسبب حلقات لا نهائية
+
