@@ -19,7 +19,7 @@ jobs:
       - name: التحقق من وجود الملف
         id: check
         run: |
-          if [ -f "tools.zip" ]; then
+          if [ -f "sound.zip" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -29,13 +29,13 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         run: |
           # حذف المجلد القديم إن وجد لتجنب التداخل
-          rm -rf tools
+          rm -rf sound
           
           # فك الضغط إلى مجلد باسم init
-          unzip -o tools.zip 
+          unzip -o sound.zip 
           
           # حذف الملف المضغوط
-          rm tools.zip
+          rm sound.zip
 
       - name: رفع التغييرات إلى GitHub
         if: steps.check.outputs.exists == 'true'
@@ -47,7 +47,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "لا توجد تغييرات لرفعها."
           else
-            git commit -m "Unzip tools.zip and remove archive"
+            git commit -m "Unzip sound.zip and remove archive"
             git push
           fi
         env:
