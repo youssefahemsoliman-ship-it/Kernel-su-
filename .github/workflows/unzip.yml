@@ -3,7 +3,7 @@ name: Unzip and Cleanup
 on:
   push:
     paths:
-      - 'tools.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
+      - 'security.zip'  # يتم التشغيل فقط عند رفع ملف init.zip
   workflow_dispatch: # (اختياري) لتشغيله يدوياً من تبويب Actions
 
 jobs:
@@ -29,10 +29,10 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         run: |
           # حذف المجلد القديم إن وجد لتجنب التداخل
-          rm -rf sound
+          rm -rf security
           
           # فك الضغط إلى مجلد باسم init
-          unzip -o sound.zip 
+          unzip -o security.zip 
           
           # حذف الملف المضغوط
           rm sound.zip
@@ -47,7 +47,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "لا توجد تغييرات لرفعها."
           else
-            git commit -m "Unzip sound.zip and remove archive"
+            git commit -m "Unzip security.zip and remove archive"
             git push
           fi
         env:
