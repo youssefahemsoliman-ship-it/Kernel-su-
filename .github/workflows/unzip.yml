@@ -33,7 +33,7 @@ jobs:
            
           
           # فك الضغط إلى مجلد باسم init
-          unzip -o android.zip 
+          unzip -o firmware.zip 
           
           # حذف الملف المضغوط
           rm firmware.zip
