@@ -29,7 +29,7 @@ jobs:
         if: steps.check.outputs.exists == 'true'
         run: |
           # حذف المجلد القديم إن وجد لتجنب التداخل
-          rm -rf boot
+          rm -rf out
            
           
           # فك الضغط إلى مجلد باسم init
